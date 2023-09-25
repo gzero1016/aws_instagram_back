@@ -33,7 +33,8 @@ public class AuthenticationController {
             bindingResult.getFieldErrors().forEach(error -> {   // getFieldErrors : 필드의 에러를 하나씩 꺼내서 오류메세지를 띄워라
                 errorMap.put(error.getField(), error.getDefaultMessage());
             });
-            throw new SignupException(errorMap);  // 예외를 밀어버린다.
+            // SignupException 예외 객체를 생성 후 예외를 던져버림
+            throw new SignupException(errorMap);
         }
 
         userService.signupUser(signupReqDto);

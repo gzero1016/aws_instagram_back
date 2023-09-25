@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.Map;
 
 @Getter
-public class SignupException extends RuntimeException{
+public class SignupException extends RuntimeException{  // 예외를 생성하는 클래스
 
     private Map<String, String> errorMap;
 
