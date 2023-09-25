@@ -1,6 +1,7 @@
 package com.toy_project.instagram.controller;
 
 import com.toy_project.instagram.dto.SignupReqDto;
+import com.toy_project.instagram.exception.SignupException;
 import com.toy_project.instagram.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class AuthenticationController {
             bindingResult.getFieldErrors().forEach(error -> {   // getFieldErrors : 필드의 에러를 하나씩 꺼내서 오류메세지를 띄워라
                 errorMap.put(error.getField(), error.getDefaultMessage());
             });
-            return ResponseEntity.badRequest().body(errorMap);
+            throw new SignupException(errorMap);  // 예외를 밀어버린다.
         }
 
         userService.signupUser(signupReqDto);
