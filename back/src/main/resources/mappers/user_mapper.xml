@@ -9,4 +9,49 @@
         values(0, #{email}, #{phone}, #{name}, #{username}, #{password}, #{provider})
     </insert>
 
+    <select id="findUserByPhone" parameterType="string" resultType="com.toy_project.instagram.entity.User">
+        select
+            user_id,
+            email,
+            phone,
+            name,
+            username,
+            password,
+            provider
+        from
+            user_tb
+        where
+            phone = #{phoneOrEmailOrUsername}
+    </select>
+
+    <select id="findUserByEmail" parameterType="string" resultType="com.toy_project.instagram.entity.User">
+        select
+            user_id,
+            email,
+            phone,
+            name,
+            username,
+            password,
+            provider
+        from
+            user_tb
+        where
+            email = #{phoneOrEmailOrUsername}
+    </select>
+
+    <select id="findUserByUsername" parameterType="string" resultType="com.toy_project.instagram.entity.User">
+        select
+            user_id,
+            email,
+            phone,
+            name,
+            username,
+            password,
+            provider
+        from
+            user_tb
+        where
+            username = #{phoneOrEmailOrUsername}
+    </select>
+
 </mapper>

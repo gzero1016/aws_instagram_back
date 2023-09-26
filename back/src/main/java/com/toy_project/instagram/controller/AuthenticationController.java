@@ -1,5 +1,6 @@
 package com.toy_project.instagram.controller;
 
+import com.toy_project.instagram.dto.SigninReqDto;
 import com.toy_project.instagram.dto.SignupReqDto;
 import com.toy_project.instagram.exception.SignupException;
 import com.toy_project.instagram.service.UserService;
@@ -27,7 +28,6 @@ public class AuthenticationController {
     @PostMapping("/user")   // 위에서 /api/v1/auth 로 한번 감싸줬기때문에 /api/v1/auth/user가 주소가된다.
     public ResponseEntity<?> signup(@Valid @RequestBody SignupReqDto signupReqDto, BindingResult bindingResult) {
     // Valid : dto에 NotBlank 어노테이션이 달려있는 변수들의 빈값이 있는지 확인을 해서 bindingResult에 넣어라
-
         if(bindingResult.hasErrors()) {
             Map<String, String> errorMap = new HashMap<>();
             bindingResult.getFieldErrors().forEach(error -> {   // getFieldErrors : 필드의 에러를 하나씩 꺼내서 오류메세지를 띄워라
@@ -36,8 +36,15 @@ public class AuthenticationController {
             // SignupException 예외 객체를 생성 후 예외를 던져버림
             throw new SignupException(errorMap);
         }
-
         userService.signupUser(signupReqDto);
         return ResponseEntity.ok(null);
     }
+
+    // 로그인을 Get이 아니라 Post 요청으로 하는이유는 정보를 숨기기 위해서임
+    @PostMapping("/login")
+    public ResponseEntity<?> signin(@RequestBody SigninReqDto signinReqDto) {
+        userService.signinUser(signinReqDto);
+        return ResponseEntity.ok(null);
+    }
+
 }
