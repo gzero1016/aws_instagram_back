@@ -37,14 +37,19 @@ public class AuthenticationController {
             throw new SignupException(errorMap);
         }
         userService.signupUser(signupReqDto);
+
         return ResponseEntity.ok(null);
     }
 
     // 로그인을 Get이 아니라 Post 요청으로 하는이유는 정보를 숨기기 위해서임
     @PostMapping("/login")
     public ResponseEntity<?> signin(@RequestBody SigninReqDto signinReqDto) {
-        userService.signinUser(signinReqDto);
-        return ResponseEntity.ok(null);
+
+        // 정상 로그인이된다면 토큰이 반환됨
+        String accessToken = userService.signinUser(signinReqDto);
+
+        // 토큰이 200번 Ok로 응답을 보냄
+        return ResponseEntity.ok().body(accessToken);
     }
 
 }

@@ -24,6 +24,7 @@ public class AuthenticateExceptionEntryPoint implements AuthenticationEntryPoint
         response.setStatus(HttpStatus.UNAUTHORIZED.value()); // UNAUTHORIZED.value() : 401 인증되지않은 오류코드 응답
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE); // Application_Json_UTF8_Value : 응답을 JSON으로
 
+        // errorMap 을 생성해서 errorMessage 를 키에 getErrorMessage에서 가져온 값을 값에 집어넣는다.
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("errorMessage", getErrorMessage((authException)));
 
@@ -34,6 +35,7 @@ public class AuthenticateExceptionEntryPoint implements AuthenticationEntryPoint
         response.getWriter().println(responseJson);
     }
 
+    // 예외에 따른 예외처리
     private String getErrorMessage(AuthenticationException authException) {
         if(authException.getClass() == BadCredentialsException.class) {
             return "잘못된 사용자 정보입니다. 다시 확인하세요.";
@@ -51,4 +53,5 @@ public class AuthenticateExceptionEntryPoint implements AuthenticationEntryPoint
             return "사용자 정보 오류.";
         }
     }
+
 }
