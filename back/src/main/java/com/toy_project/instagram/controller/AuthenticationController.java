@@ -7,10 +7,7 @@ import com.toy_project.instagram.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -50,6 +47,11 @@ public class AuthenticationController {
 
         // 토큰이 200번 Ok로 응답을 보냄
         return ResponseEntity.ok().body(accessToken);
+    }
+
+    @GetMapping("/authenticate")
+    public ResponseEntity<?> authenticate(@RequestHeader(value = "Authorization") String token) {
+        return ResponseEntity.ok(userService.authenticate(token));  // 정상적으로 토큰 검사에서 통과가대면 T 아니면 예외터트림
     }
 
 }

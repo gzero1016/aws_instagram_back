@@ -2,6 +2,7 @@ package com.toy_project.instagram.service;
 
 import com.toy_project.instagram.dto.SigninReqDto;
 import com.toy_project.instagram.dto.SignupReqDto;
+import com.toy_project.instagram.exception.JwtException;
 import com.toy_project.instagram.repository.UserMapper;
 import com.toy_project.instagram.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,15 @@ public class UserService {
         // 로그인 인증을 한 객체 안에는 로그인 유저의 정보가 들어있음
         String accessToken = jwtTokenProvider.generateAccessToken(authentication);
         return accessToken;
+    }
+
+    public Boolean authenticate(String token) {
+        String accessToken = jwtTokenProvider.convertToken(token);  // 토큰에 Bearer 를 제거하고 토큰만 추출해서 accessToken 에 넣음
+        if(!jwtTokenProvider.validateToken(accessToken)) {  // accessToken 정보 변형, 기간 만료, JWT 토큰을 사용할 수 있는지 없는지 판별
+            throw new JwtException("사용자 정보가 만료되었습니다. 다시 로그인하세요.");
+        }
+
+        return true;
     }
 
 }

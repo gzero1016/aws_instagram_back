@@ -7,6 +7,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.util.Date;
@@ -49,5 +50,30 @@ public class JwtTokenProvider {
 
         return accessToken;
     }
+
+    // 토큰 유효성 검사 로직
+    public Boolean validateToken(String token) {
+        try {
+            Jwts.parserBuilder()    // Jwts.parserBuilder: 복호화하기위해
+                    .setSigningKey(key) // 암호화했던 키
+                    .build()    // 암호화가 풀림
+                    .parseClaimsJws(token); // 정보 변형이 있거나 기간이 만료가 되었거나 JWT 토큰을 사용할 수 있는지 없는지 판별 후 T/F 리턴해줌
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
+    // 토큰 Bearer 제거
+    public String convertToken(String bearerToken) {
+        String type = "Bearer ";    // 없앨거
+        // hasText: 널 확인, 공백 확인을 동시헤 해주는 친구
+        // startWith: type 으로 시작하는지 확인
+        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(type)) {
+            return bearerToken.substring(type.length());  // 만약 위 두 조건에 해당한다면 (Bearer )요정도 길이(7)부터 끝까지 짤라서 리턴해줌
+        }
+        return "";
+    }
+
 
 }
