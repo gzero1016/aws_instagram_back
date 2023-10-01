@@ -1,4 +1,4 @@
-package com.toy_project.instagram.dto;
+package com.toyproject.instagram.dto;
 
 import lombok.Data;
 

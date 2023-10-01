@@ -1,4 +1,4 @@
-package com.toy_project.instagram;
+package com.toyproject.instagram;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

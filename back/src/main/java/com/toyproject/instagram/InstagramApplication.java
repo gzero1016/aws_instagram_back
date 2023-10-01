@@ -1,4 +1,4 @@
-package com.toy_project.instagram;
+package com.toyproject.instagram;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

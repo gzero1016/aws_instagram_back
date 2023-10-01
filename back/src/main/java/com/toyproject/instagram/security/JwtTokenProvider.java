@@ -1,4 +1,4 @@
-package com.toy_project.instagram.security;
+package com.toyproject.instagram.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -19,15 +19,14 @@ public class JwtTokenProvider {
     private final Key key;
 
     // Autowired는 IoC 컨테이너에서 객체를 자동 주입
-    // Value는 application.yml에서 변수 데이터를 자동으로 주입
+    // Value는 application.yml에서 변수 데이터를 자동 주입
 
     // IoC 에서 생성될때 application.yml 에서 jwt.secret 의 값을 가져옴
     public JwtTokenProvider(@Value("${jwt.secret}") String secret) {
-        // 키등록
-        key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+        key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret)); // 키등록
     }
 
-    // JWT 토큰을 생성 하는 로직
+    // JWT 토큰을 생성하는 로직
     // 로그인 인증을 Authentication 으로 해서 해당 객체를 갖고 JWT 를 만들어 주는것
     public String generateAccessToken(Authentication authentication) {
         String accessToken = null;
@@ -42,10 +41,10 @@ public class JwtTokenProvider {
 
         // 일반적인 builder 패턴과는 다르게 JWT 에서는 compact 로 마무리 함
         accessToken = Jwts.builder()
-                .setSubject("AccessToken")  // 토큰의 이름
+                .setSubject("AccessToken") // 토큰의 이름
                 .claim("username", principalUser.getUsername()) // 키값을 username, principalUser 에서 찾아낸 username 을 가져와 토큰에 넣어둠
-                .setExpiration(tokenExpiresDate)    // 만료 기간,시간
-                .signWith(key, SignatureAlgorithm.HS256)    // 키 값설정
+                .setExpiration(tokenExpiresDate) // 만료 기간,시간
+                .signWith(key, SignatureAlgorithm.HS256) // 키 값설정
                 .compact();
 
         return accessToken;
@@ -54,9 +53,9 @@ public class JwtTokenProvider {
     // 토큰 유효성 검사 로직
     public Boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder()    // Jwts.parserBuilder: 복호화하기위해
+            Jwts.parserBuilder() // Jwts.parserBuilder: 복호화하기위해
                     .setSigningKey(key) // 암호화했던 키
-                    .build()    // 암호화가 풀림
+                    .build() // 암호화가 풀림
                     .parseClaimsJws(token); // 정보 변형이 있거나 기간이 만료가 되었거나 JWT 토큰을 사용할 수 있는지 없는지 판별 후 T/F 리턴해줌
         } catch (Exception e) {
             return false;
@@ -66,14 +65,14 @@ public class JwtTokenProvider {
 
     // 토큰 Bearer 제거
     public String convertToken(String bearerToken) {
-        String type = "Bearer ";    // 없앨거
+        String type = "Bearer "; // 없앨거
+        // 널인지 확인, 공백인지 확인
         // hasText: 널 확인, 공백 확인을 동시헤 해주는 친구
         // startWith: type 으로 시작하는지 확인
         if(StringUtils.hasText(bearerToken) && bearerToken.startsWith(type)) {
-            return bearerToken.substring(type.length());  // 만약 위 두 조건에 해당한다면 (Bearer )요정도 길이(7)부터 끝까지 짤라서 리턴해줌
+            return bearerToken.substring(type.length()); // 만약 위 두 조건에 해당한다면 (Bearer )요정도 길이(7)부터 끝까지 짤라서 리턴해줌
         }
         return "";
     }
-
 
 }

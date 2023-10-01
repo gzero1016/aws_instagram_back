@@ -1,4 +1,4 @@
-package com.toy_project.instagram.exception;
+package com.toyproject.instagram.exception;
 
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import org.springframework.http.HttpStatus;
@@ -19,14 +19,14 @@ import java.util.Map;
 @Component
 public class AuthenticateExceptionEntryPoint implements AuthenticationEntryPoint {
 
-    @Override   // Security 쪽에서 예외가 터지면 authException 으로 업캐스팅 되어 해당 클래스로 예외가 들어온다.
+    @Override // Security 쪽에서 예외가 터지면 authException 으로 업캐스팅 되어 해당 클래스로 예외가 들어온다.
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         response.setStatus(HttpStatus.UNAUTHORIZED.value()); // UNAUTHORIZED.value() : 401 인증되지않은 오류코드 응답
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE); // Application_Json_UTF8_Value : 응답을 JSON으로
 
         // errorMap 을 생성해서 errorMessage 를 키에 getErrorMessage에서 가져온 값을 값에 집어넣는다.
         Map<String, String> errorMap = new HashMap<>();
-        errorMap.put("errorMessage", getErrorMessage((authException)));
+        errorMap.put("errorMessage", getErrorMessage(authException));
 
         JsonMapper jsonMapper = new JsonMapper();
         // jackson라이브러리 Map을 JSON문자열로 변환
@@ -44,9 +44,9 @@ public class AuthenticateExceptionEntryPoint implements AuthenticationEntryPoint
         }else if(authException.getClass() == AccountExpiredException.class) {
             return "만료된 사용자 정보입니다. 다시 확인하세요.";
         }else if(authException.getClass() == CredentialsExpiredException.class) {
-            return "인증서가 만료되었습니다. 관리자에게 문의하세요.";
+            return "인성서가 만료되었습니다. 관리자에게 문의하세요.";
         }else if(authException.getClass() == DisabledException.class) {
-            return "비활성화된 사용자 정보입니다. 관리자에게 문의하세요";
+            return "비활성화된 사용자 정보입니다. 관리자에게 문의하세요.";
         }else if(authException.getClass() == LockedException.class) {
             return "암호 오류 5회 이상. 관리자에게 문의하세요.";
         }else {

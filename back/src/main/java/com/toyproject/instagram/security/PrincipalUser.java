@@ -1,5 +1,6 @@
-package com.toy_project.instagram.security;
+package com.toyproject.instagram.security;
 
+import com.toyproject.instagram.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -55,4 +56,5 @@ public class PrincipalUser implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

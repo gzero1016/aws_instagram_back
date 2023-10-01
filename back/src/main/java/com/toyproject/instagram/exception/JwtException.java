@@ -1,4 +1,4 @@
-package com.toy_project.instagram.exception;
+package com.toyproject.instagram.exception;
 
 public class JwtException extends RuntimeException {
     public JwtException(String message) {

@@ -1,15 +1,13 @@
-
-# spring_boot ????
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/instagram
     username: root
-    password: 1q2w3e4r  # DB??
+    password: 1q2w3e4r
 
 mybatis:
   mapper-locations:
-    - /mappers/*.xml  #?????? ?? xml? ?????????
+    - /mappers/*.xml
 
 jwt:
-  secret: QqskhLTDbnkNrjhlDGztKbdvP225wOwfTaXhiwrubZx0r05dn5NV8hFdrFLEpbHdCe4PzZV3jOuBlcItyn4pEQ==
+  secret: IgwBE5D+D+639nDdSwWj/Dvil3XPM2r0UXemY0+jPklLsjfA2PRZf7SvG47lQOAWSndSz4BwxfP7kXwb/0RRmQ==

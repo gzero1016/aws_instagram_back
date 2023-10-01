@@ -1,6 +1,6 @@
-package com.toy_project.instagram.repository;
+package com.toyproject.instagram.repository;
 
-import com.toy_project.instagram.entity.User;
+import com.toyproject.instagram.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper

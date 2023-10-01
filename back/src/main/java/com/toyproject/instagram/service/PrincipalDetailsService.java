@@ -1,8 +1,8 @@
-package com.toy_project.instagram.service;
+package com.toyproject.instagram.service;
 
-import com.toy_project.instagram.entity.User;
-import com.toy_project.instagram.repository.UserMapper;
-import com.toy_project.instagram.security.PrincipalUser;
+import com.toyproject.instagram.entity.User;
+import com.toyproject.instagram.repository.UserMapper;
+import com.toyproject.instagram.security.PrincipalUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +18,7 @@ public class PrincipalDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String phoneOrEmailOrUsername) throws UsernameNotFoundException {
 
-// 아이디가 phone인지 email인지 username인지 걸러서 해당값을 아이디에 넣어 password랑 리턴해준다.
+        // 아이디가 phone인지 email인지 username인지 걸러서 해당값을 아이디에 넣어 password랑 리턴해준다.
         User user = userMapper.findUserByPhone(phoneOrEmailOrUsername);
         if(user != null) {
             return new PrincipalUser(user.getPhone(), user.getPassword());
@@ -34,7 +34,15 @@ public class PrincipalDetailsService implements UserDetailsService {
             return new PrincipalUser(user.getUsername(), user.getPassword());
         }
 
-        throw  new UsernameNotFoundException("잘못된 사용자 정보입니다. 다시 확인하세요.");
-
+        throw new UsernameNotFoundException("잘못된 사용자 정보입니다. 다시 확인하세요.");
     }
 }
+
+
+
+
+
+
+
+
+
