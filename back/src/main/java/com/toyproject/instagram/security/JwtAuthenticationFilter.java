@@ -23,6 +23,8 @@ public class JwtAuthenticationFilter extends GenericFilter {
         String jwtToken = jwtTokenProvider.convertToken(token); // convertToken: Bearer 때는거
         String uri = httpServletRequest.getRequestURI(); // uri 주소 가져오기
 
+        System.out.println(uri);
+
         // /api/v1/auth/**로 시작하지않는 나머지 주소들의 인증절차 로직
         if(!uri.startsWith("/api/v1/auth") && jwtTokenProvider.validateToken(jwtToken)) {  // validateToken: 토큰이 유효하면 True , 유효하지 않으면 False
             Authentication authentication = jwtTokenProvider.getAuthentication(jwtToken);

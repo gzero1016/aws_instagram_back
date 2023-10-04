@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1")
 public class UserController {
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getUser(@PathVariable int userId) {    //해당 조건에대한 값을 가져오는 어노테이션
-
+    @GetMapping("/user/{username}")
+    public ResponseEntity<?> getUser(@PathVariable String username) {    //해당 조건에대한 값을 가져오는 어노테이션
         return ResponseEntity.ok().body(null);
     }
 }
