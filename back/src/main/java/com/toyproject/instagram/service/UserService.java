@@ -4,6 +4,7 @@ import com.toyproject.instagram.dto.SigninReqDto;
 import com.toyproject.instagram.dto.SignupReqDto;
 import com.toyproject.instagram.entity.User;
 import com.toyproject.instagram.exception.JwtException;
+import com.toyproject.instagram.exception.SignupException;
 import com.toyproject.instagram.repository.UserMapper;
 import com.toyproject.instagram.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,12 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service // IoC
 @RequiredArgsConstructor
@@ -25,8 +32,47 @@ public class UserService {
 
     public void signupUser(SignupReqDto signupReqDto) {
         User user = signupReqDto.toUserEntity(passwordEncoder);
-        Integer executeCount = userMapper.saveUser(user);
-        System.out.println(executeCount);
+
+        // email , phone 중 어느걸로 로그인 했는지 정규식을 들고와 확인후 해당 데이터베이스 컬럼에 값 추가하는 로직
+        Matcher emailMatcher = Pattern.compile("^[a-zA-Z0-9]+@[0-9a-zA-Z]+\\.[a-z]*$")
+                .matcher(signupReqDto.getPhoneOrEmail());
+        Matcher phoneMatcher = Pattern.compile("^[0-9]{11}+$")
+                .matcher(signupReqDto.getPhoneOrEmail());
+
+        if(emailMatcher.matches()) {
+            user.setEmail(signupReqDto.getPhoneOrEmail());
+        }
+        if(phoneMatcher.matches()) {
+            user.setPhone(signupReqDto.getPhoneOrEmail());
+        }
+
+        checkDuplicated(user); // 중복확인
+        userMapper.saveUser(user); // 중복확인에서 예외가 터지지 않았으면 저장하기
+    }
+
+    // 중복 확인 로직
+    private void checkDuplicated(User user) {
+        if(StringUtils.hasText(user.getPhone())) {  // null , 빈값여부를 같이 체크해줌
+            if(userMapper.findUserByPhone(user.getPhone()) != null) {
+                Map<String, String> errorMap = new HashMap<>();
+                errorMap.put("phone", "이미 사용중인 연락처 입니다.");
+                throw new SignupException(errorMap);
+            }
+        }
+        if(StringUtils.hasText(user.getEmail())) {
+            if(userMapper.findUserByEmail(user.getEmail()) != null) {
+                Map<String, String> errorMap = new HashMap<>();
+                errorMap.put("email", "이미 사용중인 이메일 입니다.");
+                throw new SignupException(errorMap);
+            }
+        }
+        if(StringUtils.hasText(user.getUsername())) {
+            if(userMapper.findUserByUsername(user.getUsername()) != null) {
+                Map<String, String> errorMap = new HashMap<>();
+                errorMap.put("username", "이미 사용중인 사용자이름 입니다.");
+                throw new SignupException(errorMap);
+            }
+        }
     }
 
     public String signinUser(SigninReqDto signinReqDto) {

@@ -26,7 +26,6 @@ public class SignupReqDto {
     // dto를 entity로 변환하는 과정
     public User toUserEntity(BCryptPasswordEncoder passwordEncoder) {
         return User.builder()
-                .email(phoneOrEmail)
                 .name(name)
                 .username(username)
                 .password(passwordEncoder.encode(password)) // Dto -> Entity로 변환할때 비밀번호 암호화
